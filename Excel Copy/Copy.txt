@@ -1,0 +1,63 @@
+Sub Automate()
+
+'This is the main function
+    totalPickSheets
+    greaterThanTenTouches
+    operatorID
+    startEndTime
+    countPickingID
+    pickingID
+    sumOperatorID
+    AF
+    speed
+    
+End Sub
+
+Sub totalPickSheets()
+'#1 Total number of unique pick sheets
+'Total Pick sheets#  (Picking ID)
+    MsgBox "hi"
+
+End Sub
+
+Sub greaterThanTenTouches()
+'#2, <=10 touches per pick sheets number (Picking ID)
+
+
+End Sub
+
+Sub operatorID()
+'#3, Operator ID is Column AQ from Source data sheet (updated by), needs to get no duplicate list
+
+End Sub
+
+Sub startEndTime()
+'#4, Get each operator starting time and ending time.
+
+End Sub
+
+Sub countPickingID()
+'#5, Pick sheets number for each Operator is count of picking ID (no duplicate)
+
+End Sub
+
+Sub pickingID()
+'#6, Picking ID (pick sheets ID) is column Y in the SOURCE DATA sheet
+
+End Sub
+
+Sub sumOperatorID()
+'#7, Touch number is total sum of each operator ID
+
+End Sub
+
+Sub AF()
+'#8, Touch number is column AF in the Source data sheet
+
+End Sub
+
+Sub speed()
+'Speed will be Total touch number / time spent by each operator (Ending time - Starting time)
+
+End Sub
+
