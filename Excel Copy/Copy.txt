@@ -16,8 +16,27 @@ End Sub
 Sub totalPickSheets()
 '#1 Total number of unique pick sheets
 'Total Pick sheets#  (Picking ID)
-    MsgBox "hi"
+   
+    Dim LstRw As Long, Rng As Range, List As Object
+    Dim selector
+    
+    Set selector = Range("I7")
+    
+    Worksheets("SOURCE DATA").Activate
+    
+    LstRw = Cells(Rows.Count, "Y").End(xlUp).Row
+    Set List = CreateObject("Scripting.Dictionary")
 
+    For Each Rng In Range("Y2:Y" & LstRw)
+        If Not List.Exists(Rng.Value) Then List.Add Rng.Value, Nothing
+    Next
+    
+    Worksheets("Summary").Activate
+    selector.Value = List.Count
+    
+    MsgBox "There are " & List.Count & " unique values in column Y (Unique picking ID)"
+    
+    
 End Sub
 
 Sub greaterThanTenTouches()
@@ -28,7 +47,18 @@ End Sub
 
 Sub operatorID()
 '#3, Operator ID is Column AQ from Source data sheet (updated by), needs to get no duplicate list
-
+    
+    Dim d As Object, c As Variant, i As Long, lr As Long
+    Set d = CreateObject("Scripting.Dictionary")
+    Worksheets("SOURCE DATA").Activate
+    lr = Cells(Rows.Count, 1).End(xlUp).Row
+    c = Range("AQ2:AQ" & lr)
+    For i = 1 To UBound(c, 1)
+      d(c(i, 1)) = 1
+    Next i
+    Worksheets("Summary").Activate
+    Range("H10").Resize(d.Count) = Application.Transpose(d.keys)
+    
 End Sub
 
 Sub startEndTime()
@@ -60,4 +90,3 @@ Sub speed()
 'Speed will be Total touch number / time spent by each operator (Ending time - Starting time)
 
 End Sub
-
