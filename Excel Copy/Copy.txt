@@ -2,13 +2,10 @@ Sub Automate()
 
 'This is the main function
     totalPickSheets
-    greaterThanTenTouches
+    smallerThanTenTouches
     operatorID
     startEndTime
     countPickingID
-    pickingID
-    sumOperatorID
-    AF
     speed
     
 End Sub
@@ -39,9 +36,60 @@ Sub totalPickSheets()
     
 End Sub
 
-Sub greaterThanTenTouches()
+Sub smallerThanTenTouches()
 '#2, <=10 touches per pick sheets number (Picking ID)
+'So for each unique picking ID, add the sum of the touches, then count the ones <= 10
+'Uses column "touch" and pickingID
 
+    Dim d As Object, c As Variant, i As Long, lr As Long
+    Set d = CreateObject("Scripting.Dictionary")
+    Worksheets("SOURCE DATA").Activate
+    lr = Cells(Rows.Count, 1).End(xlUp).Row
+    c = Range("Y2:Y" & lr)
+    For i = 1 To UBound(c, 1)
+      d(c(i, 1)) = 1
+    Next i
+    Worksheets("Summary").Activate
+    Range("O10").Resize(d.Count) = Application.Transpose(d.keys)
+    
+    
+    Dim cell As Range
+    Dim selector As Range
+    Dim temp As Integer
+    Dim cell2 As Range
+    Dim selector2 As Range
+    Dim Total As Integer
+    
+    Set selector = Range("O10", Range("O10").End(xlDown))
+    Worksheets("SOURCE DATA").Activate
+    Set selector2 = Range("Y2", Range("Y2").End(xlDown))
+    Worksheets("Summary").Activate
+    
+    For Each cell In selector
+        temp = 0
+        Worksheets("SOURCE DATA").Activate
+        For Each cell2 In selector2
+            If cell2.Value = cell.Value Then
+            temp = temp + cell2.Offset(0, 7).Value
+            End If
+        Next cell2
+        Worksheets("Summary").Activate
+        cell.Offset(0, 1).Value = temp
+        cell.Offset(0, 1).NumberFormat = "General"
+        
+    Next cell
+    
+    Set selector = Range("P10", Range("P10").End(xlDown))
+    
+    Total = 0
+    For Each cell In selector
+        If cell.Value <= 10 Then
+        Total = Total + 1
+        End If
+    Next
+    
+    Range("M7").Value = Total
+    Range("N7").Value = Range("M7").Value / Range("I7").Value
 
 End Sub
 
@@ -64,29 +112,17 @@ End Sub
 Sub startEndTime()
 '#4, Get each operator starting time and ending time.
 
+
 End Sub
 
 Sub countPickingID()
 '#5, Pick sheets number for each Operator is count of picking ID (no duplicate)
+' Using pivot table, just count number of entries
 
 End Sub
 
-Sub pickingID()
-'#6, Picking ID (pick sheets ID) is column Y in the SOURCE DATA sheet
-
-End Sub
-
-Sub sumOperatorID()
-'#7, Touch number is total sum of each operator ID
-
-End Sub
-
-Sub AF()
-'#8, Touch number is column AF in the Source data sheet
-
-End Sub
 
 Sub speed()
-'Speed will be Total touch number / time spent by each operator (Ending time - Starting time)
+'#6 Speed will be Total touch number / time spent by each operator (Ending time - Starting time)
 
 End Sub
