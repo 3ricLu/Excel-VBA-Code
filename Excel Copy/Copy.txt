@@ -8,6 +8,9 @@ Sub Automate()
     countPickingID
     speed
     
+    Range("O10", Range("O10").End(xlDown)).ClearContents
+    Range("P10", Range("P10").End(xlDown)).ClearContents
+    
 End Sub
 
 Sub totalPickSheets()
@@ -119,7 +122,7 @@ Sub startEndTime()
     Set selector = Range("H10", Range("H10").End(xlDown))
     
     For Each cell In selector
-        cell.Offset(0, 3).Value = cell.Offset(0, 2).Value - cell.Offset(0, 1).Value
+        cell.Offset(0, 3).Value = (cell.Offset(0, 2).Value - cell.Offset(0, 1).Value)
     Next cell
 
 End Sub
@@ -232,5 +235,31 @@ Sub speed()
 End Sub
 
 Sub touch()
-
+    Dim cell As Range
+    Dim selector As Range
+    Dim temp As Integer
+    Dim cell2 As Range
+    Dim selector2 As Range
+    Dim Total As Integer
+    
+    Set selector = Range("H10", Range("H10").End(xlDown))
+    Worksheets("SOURCE DATA").Activate
+    Set selector2 = Range("AQ2", Range("AQ2").End(xlDown))
+    Worksheets("Summary").Activate
+    
+    For Each cell In selector
+        temp = 0
+        Worksheets("SOURCE DATA").Activate
+        For Each cell2 In selector2
+            If cell2.Value = cell.Value Then
+            temp = temp + cell2.Offset(0, -11).Value
+            End If
+        Next cell2
+        Worksheets("Summary").Activate
+        cell.Offset(0, 5).Value = temp
+        cell.Offset(0, 5).NumberFormat = "General"
+        
+    Next cell
+    
 End Sub
+
