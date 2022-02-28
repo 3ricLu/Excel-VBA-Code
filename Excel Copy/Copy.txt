@@ -11,6 +11,8 @@ Sub Automate()
     Range("O10", Range("O10").End(xlDown)).ClearContents
     Range("P10", Range("P10").End(xlDown)).ClearContents
     
+    MsgBox ("Automation is finished")
+    
 End Sub
 
 Sub totalPickSheets()
@@ -33,9 +35,6 @@ Sub totalPickSheets()
     
     Worksheets("Summary").Activate
     selector.Value = List.Count
-    
-    MsgBox "There are " & List.Count & " unique values in column Y (Unique picking ID)"
-    
     
 End Sub
 
@@ -262,4 +261,5 @@ Sub touch()
     Next cell
     
 End Sub
+
 
