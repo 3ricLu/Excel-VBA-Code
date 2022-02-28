@@ -111,18 +111,126 @@ End Sub
 
 Sub startEndTime()
 '#4, Get each operator starting time and ending time.
+    startTime
+    endTime
+    Dim selector As Range
+    Dim cell As Range
+    
+    Set selector = Range("H10", Range("H10").End(xlDown))
+    
+    For Each cell In selector
+        cell.Offset(0, 3).Value = cell.Offset(0, 2).Value - cell.Offset(0, 1).Value
+    Next cell
 
+End Sub
+
+Sub startTime()
+    Dim selector As Range
+    Dim cell As Range
+    Dim cell2 As Range
+    Dim start As Date
+    Dim temp As Date
+    
+    start = "2099-04-30 15:40"
+    
+    Set selector = Range("H10", Range("H10").End(xlDown))
+    Worksheets("SOURCE DATA").Activate
+    Set selector2 = Range("AQ2", Range("AQ2").End(xlDown))
+    Worksheets("Summary").Activate
+    
+    For Each cell In selector
+        start = "2099-04-30 15:40"
+        For Each cell2 In selector2
+            If cell.Value = cell2.Value Then
+                temp = cell2.Offset(0, -1).Value
+                start = WorksheetFunction.Min(temp, start)
+            End If
+        Next cell2
+        cell.Offset(0, 1).Value = start
+    Next cell
+End Sub
+
+Sub endTime()
+    Dim selector As Range
+    Dim cell As Range
+    Dim cell2 As Range
+    Dim start As Date
+    Dim temp As Date
+    
+    start = "1999-04-30 15:40"
+    
+    Set selector = Range("H10", Range("H10").End(xlDown))
+    Worksheets("SOURCE DATA").Activate
+    Set selector2 = Range("AQ2", Range("AQ2").End(xlDown))
+    Worksheets("Summary").Activate
+    
+    For Each cell In selector
+        start = "1999-04-30 15:40"
+        For Each cell2 In selector2
+            If cell.Value = cell2.Value Then
+                temp = cell2.Offset(0, -1).Value
+                start = WorksheetFunction.Max(temp, start)
+            End If
+        Next cell2
+        cell.Offset(0, 2).Value = start
+    Next cell
 
 End Sub
 
 Sub countPickingID()
 '#5, Pick sheets number for each Operator is count of picking ID (no duplicate)
 ' Using pivot table, just count number of entries
+    
+    Dim List As Object
+    
+    Set List = CreateObject("Scripting.Dictionary")
+    
+    
+    Dim cell As Range
+    Dim selector As Range
+    Dim temp As Integer
+    Dim cell2 As Range
+    Dim selector2 As Range
+    
+    Set selector = Range("H10", Range("H10").End(xlDown))
+    Worksheets("SOURCE DATA").Activate
+    Set selector2 = Range("AQ2", Range("AQ2").End(xlDown))
+    Worksheets("Summary").Activate
+    
+    For Each cell In selector
+        Set List = CreateObject("Scripting.Dictionary")
+        temp = 0
+        Worksheets("SOURCE DATA").Activate
+        For Each cell2 In selector2
+            If cell2.Value = cell.Value Then
+                If Not List.Exists(cell2.Offset(0, -18).Value) Then
+                    List.Add cell2.Offset(0, -18).Value, Nothing
+                    temp = temp + 1
+                End If
+            End If
+        Next cell2
+        
+        Worksheets("Summary").Activate
+        cell.Offset(0, 4).Value = temp
+        cell.Offset(0, 4).NumberFormat = "General"
+    Next cell
 
 End Sub
 
 
 Sub speed()
 '#6 Speed will be Total touch number / time spent by each operator (Ending time - Starting time)
+    touch
+    Dim selector As Range
+    Dim cell As Range
+    
+    Set selector = Range("H10", Range("H10").End(xlDown))
+    
+    For Each cell In selector
+        cell.Offset(0, 6).Value = cell.Offset(0, 5).Value / (cell.Offset(0, 3).Value * 24)
+    Next cell
+End Sub
+
+Sub touch()
 
 End Sub
