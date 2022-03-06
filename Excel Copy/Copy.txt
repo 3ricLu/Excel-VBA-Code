@@ -1,6 +1,8 @@
 Sub Automate()
 
 'This is the main function
+    Range("H10", Range("N10").End(xlDown)).ClearContents
+
     totalPickSheets
     smallerThanTenTouches
     operatorID
@@ -122,6 +124,9 @@ Sub startEndTime()
     
     For Each cell In selector
         cell.Offset(0, 3).Value = (cell.Offset(0, 2).Value - cell.Offset(0, 1).Value)
+        If cell.Offset(0, 3).Value = 0 Then
+            cell.Offset(0, 3).Value = DateAdd("n", 1, cell.Offset(0, 3).Value)
+        End If
     Next cell
 
 End Sub
